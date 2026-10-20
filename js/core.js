@@ -272,15 +272,19 @@ window.APP = (function () {
     const byVm = groupBy(M.rows, r => norm(r.vm));
     const rg = new Map(M.D.deParaRegiao.map(r => [norm(r[0]), r[1]]));
     const nomesMeta = new Set();
+    // metas sem nenhum "Nome no SAP" ligado no De-Para (carteiras, vagas): pendência de cadastro, não de desempenho
+    const mapeados = new Set(M.D.deParaVendedores.map(r => norm(r[1])));
     const out = M.metas.map(([canal, nome, mVol, mCli, mMix]) => {
       const k = norm(nome); nomesMeta.add(k);
+      const semVinculo = !mapeados.has(k);
       const R = byVm.get(k) || [];
       const vol = sum(R, r => r.vol), fat = sum(R, r => r.tot);
       const clis = uniq(R, r => r.cli);
       const ating = mVol ? vol / mVol : null;
       const ritmo = mVol ? (vol / M.diasCorridos * M.diasMes) / mVol : null;
       return {
-        nome, canal, metaVol: +mVol || 0, vol, ating, ritmo, st: A.status(+mVol, ating, ritmo),
+        nome, canal, metaVol: +mVol || 0, vol, ating, ritmo, semVinculo,
+        st: semVinculo && !vol ? { cls: 'neutral', ico: '○', txt: 'Sem vínculo no SAP' } : A.status(+mVol, ating, ritmo),
         metaCli: +mCli || 0, clis, cobertura: mCli ? clis / mCli : null,
         metaMix: +mMix || 0, mix: vol ? sum(R.filter(r => r.premium), r => r.vol) / vol : null,
         fat, regiao: rg.get(k) || '(revisar)', comMeta: true,

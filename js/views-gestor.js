@@ -7,6 +7,7 @@
   A.views = A.views || {};
 
   function situacao(v) {
+    if (v.semVinculo && !v.vol) return { cls: 'neutral', ico: '○', txt: 'Sem vínculo no SAP', ordem: 6 };
     if (v.metaVol && v.falta <= 0) return { cls: 'good', ico: '●', txt: 'Meta batida', ordem: 5 };
     if (!v.vol) return { cls: 'bad', ico: '■', txt: 'Sem venda', ordem: 0 };
     if (v.pctProj >= 1) return { cls: 'good', ico: '●', txt: 'No caminho', ordem: 4 };
@@ -64,6 +65,7 @@
     const tMedia = G.du.decorridos ? tVol / G.du.decorridos : 0;
     const tNec = G.du.restantes ? tFalta / G.du.restantes : 0;
     const criticos = lista.filter(v => ['Crítico', 'Sem venda'].includes(v.sit.txt)).length;
+    const semVinc = lista.filter(v => v.sit.txt === 'Sem vínculo no SAP');
     const atrasados = G.retornos.filter(v => v.a3.data < G.hoje);
     const nomesLista = new Set(lista.map(v => norm(v.nome)));
     const filtraCli = c => !ui.gestorCanal || c.vend.some(n => nomesLista.has(norm(n)));
@@ -90,6 +92,7 @@
           <td>${A.inbar(v.pctProj, 1)}</td><td class="n">${vis.length}</td>
           <td><button class="btn ghost sm" data-pauta="${esc(v.nome)}">Pauta 1:1</button></td></tr>`; }).join('') || '<tr><td colspan="11" class="muted">Nenhum vendedor com meta no filtro.</td></tr>'}
         </tbody></table></div>
+        ${semVinc.length ? `<p class="small"><span class="pill neutral">○ ${semVinc.length}</span> meta(s) sem vínculo com nenhum nome do SAP (${esc(semVinc.map(v => v.nome).join(', '))}) — ligue no De-Para para acompanhar; somam ${lit(sum(semVinc, v => v.metaVol))} da meta.</p>` : ''}
         <p class="muted small"><b>Esforço</b> = quanto o vendedor precisa vender por dia útil dividido pela média que vem fazendo (1,0× = manter o ritmo). Até 1,25× é recuperável com foco; acima disso, a conversa é de plano de ação. Dias úteis = seg–sex sem os feriados de Cadastros.</p>
       </section>
 
