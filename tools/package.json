@@ -1,0 +1,6 @@
+{
+  "name": "cglub-tools",
+  "private": true,
+  "description": "Ferramentas do Painel CGLUB (aplicar SQL no Supabase, carga inicial, convites)",
+  "devDependencies": { "pg": "8.13.1", "xlsx": "0.18.5" }
+}

@@ -1,0 +1,9 @@
+Logo oficial Lubrax
+
+Coloque aqui o arquivo do kit de marca com um destes nomes:
+  logo-lubrax.svg   (preferível)
+  logo-lubrax.png   (fundo transparente)
+
+Ele aparece no login e no menu lateral (sobre fundo verde, então use a versão para fundo escuro / negativa).
+Alternativa: Cadastros → Base de dados → Identidade visual → Enviar logo (fica salvo no navegador).
+Sem o arquivo, o app mostra o monograma "CG" nas cores Lubrax.

@@ -1,0 +1,10 @@
+# Dados de vendas NUNCA vão para o repositório (público): ficam no banco.
+dados.js
+*.xlsx
+*.xls
+*.csv
+*.zip
+# credenciais e dependências
+.env
+.env.*
+node_modules/
